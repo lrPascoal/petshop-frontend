@@ -1,1 +1,55 @@
-<p>agendar works!</p>
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Agendar Serviço 🗓️</mat-card-title>
+      <mat-card-subtitle>Escolha o pet, o serviço e o melhor horário.</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="agendarForm" (ngSubmit)="onSubmit()" class="meu-formulario">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Qual Pet?</mat-label>
+          <mat-select formControlName="petId">
+            <mat-option *ngFor="let pet of meusPets" [value]="pet.id">
+              {{ pet.nome }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="agendarForm.get('petId')?.hasError('required')">Selecione um pet.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Serviço</mat-label>
+          <mat-select formControlName="servicoId">
+            <mat-option *ngFor="let servico of servicosDisponiveis" [value]="servico.id">
+              {{ servico.nome }} - R$ {{ servico.preco }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="agendarForm.get('servicoId')?.hasError('required')">Selecione um serviço.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Data</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="data" readonly>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="agendarForm.get('data')?.hasError('required')">Escolha uma data.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Horário</mat-label>
+          <input matInput type="time" formControlName="hora">
+          <mat-error *ngIf="agendarForm.get('hora')?.hasError('required')">Escolha um horário.</mat-error>
+        </mat-form-field>
+
+        <div class="botoes-container">
+          <button mat-button type="button" routerLink="/tutor/meus-pets">Cancelar</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="agendarForm.invalid">
+            Confirmar Agendamento
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
