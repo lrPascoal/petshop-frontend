@@ -7,3 +7,13 @@ export interface Pet {
   dataNascimento?: string;  // No início, string facilita a máscara de data
   tutorId: number;          // Chave estrangeira lógica para o dono
 }
+
+
+export interface Agendamento {
+  id: number;
+  petNome: string;     
+  servicoNome: string; 
+  data: string;        // Pode ser string ou Date
+  hora: string;
+  status: string;      // 'Aguardando', 'Em andamento', 'Concluído'
+}

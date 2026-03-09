@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// Imports do Angular Material para Cards, Ícones e Tabelas
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+
+// Importando o Service e a Interface
+import { AgendamentoService } from '../../../services/agendamento';
+import { Agendamento } from '../../../models/model';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,21 +15,27 @@ import { MatTableModule } from '@angular/material/table';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
-export class Dashboard {
-  // Dados simulados para os Cartões de Resumo no topo da tela
+export class Dashboard implements OnInit { // Adicionamos o OnInit
   resumo = {
-    agendamentosHoje: 5,
+    agendamentosHoje: 0, // Vamos atualizar isso dinamicamente depois
     petsCadastrados: 42,
     faturamentoDia: 350.00
   };
 
-  // Configuração das colunas da tabela de agenda do dia
-  colunasAgenda: string[] = ['horario', 'pet', 'servico', 'status'];
+  // Atenção aqui: Na tabela do HTML as colunas se chamavam 'pet' e 'servico'. 
+  // Na nossa nova interface, chamam-se 'petNome' e 'servicoNome'. Precisamos atualizar!
+  colunasAgenda: string[] = ['horario', 'petNome', 'servicoNome', 'status'];
   
-  // Mock da lista de atendimentos programados para hoje
-  agendaHoje = [
-    { horario: '09:00', pet: 'Rex', servico: 'Banho', status: 'Concluído' },
-    { horario: '10:30', pet: 'Mimi', servico: 'Banho e Tosa', status: 'Em andamento' },
-    { horario: '14:00', pet: 'Thor', servico: 'Corte de Unhas', status: 'Aguardando' }
-  ];
+  // A lista começa vazia
+  agendaHoje: Agendamento[] = [];
+
+  // Injetamos o serviço
+  constructor(private agendamentoService: AgendamentoService) {}
+
+  // Quando a tela carregar, buscamos a lista no serviço
+  ngOnInit(): void {
+    this.agendaHoje = this.agendamentoService.getAgendamentos();
+    // Atualiza o contador do cartãozinho lá em cima
+    this.resumo.agendamentosHoje = this.agendaHoje.length; 
+  }
 }
