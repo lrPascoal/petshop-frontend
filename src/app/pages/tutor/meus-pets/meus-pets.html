@@ -1,6 +1,12 @@
 <div class="tabela-container">
   <h2>Meus Pets 🐾</h2>
 
+  <div style="margin-bottom: 20px;">
+    <button mat-raised-button color="accent" routerLink="/tutor/novo-pet">
+      <mat-icon>add</mat-icon> Cadastrar Novo Pet
+    </button>
+  </div>
+
   <table mat-table [dataSource]="listaDePets" class="mat-elevation-z4">
 
     <ng-container matColumnDef="nome">

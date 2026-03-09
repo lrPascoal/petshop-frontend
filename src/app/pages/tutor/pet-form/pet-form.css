@@ -1,0 +1,25 @@
+.form-container {
+  display: flex;
+  justify-content: center; /* Centraliza o cartão no meio da tela */
+  margin-top: 40px;
+}
+
+mat-card {
+  width: 100%;
+  max-width: 500px; /* Impede que o formulário fique esticado em monitores grandes */
+  padding: 20px;
+}
+
+.meu-formulario {
+  display: flex;
+  flex-direction: column; /* Coloca um campo debaixo do outro */
+  gap: 15px; /* Cria um espaçamento uniforme entre os campos */
+  margin-top: 20px;
+}
+
+.botoes-container {
+  display: flex;
+  justify-content: flex-end; /* Joga os botões para o lado direito */
+  gap: 10px;
+  margin-top: 10px;
+}

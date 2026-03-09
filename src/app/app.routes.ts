@@ -12,6 +12,11 @@ export const routes: Routes = [
         path: 'meus-pets', 
         loadComponent: () => import('./pages/tutor/meus-pets/meus-pets').then(m => m.MeusPets) 
       },
+      // ---> NOVA ROTA ADICIONADA AQUI <---
+      { 
+        path: 'novo-pet', 
+        loadComponent: () => import('./pages/tutor/pet-form/pet-form').then(m => m.PetForm) 
+      },
       { 
         path: 'agendar', 
         loadComponent: () => import('./pages/tutor/agendar/agendar').then(m => m.Agendar) 

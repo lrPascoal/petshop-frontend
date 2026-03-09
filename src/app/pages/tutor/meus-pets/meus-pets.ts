@@ -4,15 +4,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 // Importando a interface para garantir que os dados sigam o padrão
 import { Pet } from '../../../models/model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-meus-pets',
   standalone: true,
   // Precisamos declarar aqui tudo o que o HTML vai usar
-  imports: [MatTableModule, MatButtonModule, MatIconModule],
+  imports: [MatTableModule, MatButtonModule, MatIconModule, RouterModule],  
   templateUrl: './meus-pets.html',
   styleUrl: './meus-pets.css'
 })
+
 export class MeusPets {
   // Define quais colunas vão aparecer e em qual ordem
   colunasExibidas: string[] = ['nome', 'especie', 'raca', 'acoes'];
