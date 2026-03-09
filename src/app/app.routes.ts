@@ -10,11 +10,11 @@ export const routes: Routes = [
     children: [
       { 
         path: 'meus-pets', 
-        loadComponent: () => import('./pages/tutor/meus-pets/meus-pets.component').then(m => m.MeusPetsComponent) 
+        loadComponent: () => import('./pages/tutor/meus-pets/meus-pets').then(m => m.MeusPets) 
       },
       { 
         path: 'agendar', 
-        loadComponent: () => import('./pages/tutor/agendar/agendar.component').then(m => m.AgendarComponent) 
+        loadComponent: () => import('./pages/tutor/agendar/agendar').then(m => m.Agendar) 
       },
     ]
   },
@@ -25,11 +25,11 @@ export const routes: Routes = [
     children: [
       { 
         path: 'dashboard', 
-        loadComponent: () => import('./pages/admin/dashboard/dashboard.component').then(m => m.DashboardComponent) 
+        loadComponent: () => import('./pages/admin/dashboard/dashboard').then(m => m.Dashboard) 
       },
       { 
         path: 'servicos', 
-        loadComponent: () => import('./pages/admin/gerenciar-servicos/gerenciar-servicos.component').then(m => m.GerenciarServicosComponent) 
+        loadComponent: () => import('./pages/admin/gerenciar-servicos/gerenciar-servicos').then(m => m.GerenciarServicos) 
       },
     ]
   }
