@@ -1,7 +1,7 @@
 <div class="form-container">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Cadastrar Novo Pet 🐾</mat-card-title>
+      <mat-card-title>{{ petIdEdicao ? 'Editar Pet 🐾' : 'Cadastrar Novo Pet 🐾' }}</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
@@ -51,7 +51,7 @@
           <button mat-button type="button" routerLink="/tutor/meus-pets">Cancelar</button>
           
           <button mat-raised-button color="primary" type="submit" [disabled]="petForm.invalid">
-            Salvar Pet
+            {{ petIdEdicao ? 'Atualizar Pet' : 'Salvar Pet' }}
           </button>
         </div>
 

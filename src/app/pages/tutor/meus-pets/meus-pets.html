@@ -27,10 +27,10 @@
     <ng-container matColumnDef="acoes">
       <th mat-header-cell *matHeaderCellDef> Ações </th>
       <td mat-cell *matCellDef="let pet">
-        <button mat-icon-button color="primary" title="Editar Pet">
+        <button mat-icon-button color="primary" title="Editar Pet" [routerLink]="['/tutor/editar-pet', pet.id]">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="warn" title="Remover Pet">
+        <button mat-icon-button color="warn" title="Remover Pet" (click)="excluirPet(pet.id, pet.nome)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
