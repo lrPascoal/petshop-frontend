@@ -1,55 +1,67 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 
-// Componentes do Angular Material para o visual do formulário
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
+// Importando o Serviço e o Modelo
+import { PetService } from '../../../services/pet';
+import { Pet } from '../../../models/model';
+
 @Component({
   selector: 'app-pet-form',
   standalone: true,
-  // Precisamos importar o ReactiveFormsModule para o formulário funcionar
   imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatCardModule
+    CommonModule, ReactiveFormsModule, RouterModule,
+    MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatCardModule
   ],
   templateUrl: './pet-form.html',
   styleUrl: './pet-form.css'
 })
 export class PetForm {
-  // A variável que vai guardar o estado de todos os campos do formulário
   petForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
-    // Campos e as validações (Validators.required - não pode ficar em branco)
+  // Injetamos o FormBuilder, o PetService e o Router (para mudar de tela via código)
+  constructor(
+    private fb: FormBuilder,
+    private petService: PetService,
+    private router: Router 
+  ) {
     this.petForm = this.fb.group({
       nome: ['', Validators.required],
       especie: ['', Validators.required],
       raca: ['', Validators.required],
-      peso: ['', [Validators.required, Validators.min(0.1)]] // Peso tem que ser preenchido e maior que zero
+      peso: ['', [Validators.required, Validators.min(0.1)]]
     });
   }
 
-  // Função - botão "Salvar"
   onSubmit() {
     if (this.petForm.valid) {
-      //console do navegador.
-      //dados para o back-end em Java!
-      console.log('Dados do Novo Pet:', this.petForm.value);
-      alert('Pet validado com sucesso! (Pressione F12 e olhe a aba Console)');
+      // 1. Pega os dados validados do formulário
+      const dadosDoFormulario = this.petForm.value;
+
+      // 2. Monta o objeto Pet novo (sem ID, pois o Service vai gerar)
+      const novoPet: Pet = {
+        id: 0,
+        nome: dadosDoFormulario.nome,
+        especie: dadosDoFormulario.especie,
+        raca: dadosDoFormulario.raca,
+        peso: dadosDoFormulario.peso,
+        tutorId: 1 // Simulando o ID do tutor logado
+      };
+
+      // 3. Manda o Serviço salvar
+      this.petService.adicionarPet(novoPet);
+
+      // 4. Volta automaticamente para a tela da tabela para ver o resultado!
+      this.router.navigate(['/tutor/meus-pets']);
+      
     } else {
-      // Se o usuário tentar burlar algo, marcamos todos os campos para mostrar os erros em vermelho
       this.petForm.markAllAsTouched();
     }
   }
