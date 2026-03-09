@@ -1,0 +1,19 @@
+.tabela-container {
+  margin-top: 20px;
+}
+
+.cabecalho-pagina {
+  display: flex;
+  justify-content: space-between; /* Joga o título para a esquerda e o botão para a direita */
+  align-items: center; /* Alinha os dois verticalmente no centro */
+  margin-bottom: 20px;
+}
+
+.cabecalho-pagina h2 {
+  margin: 0;
+  color: #333;
+}
+
+table {
+  width: 100%;
+}
