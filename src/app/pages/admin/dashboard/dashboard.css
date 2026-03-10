@@ -1,57 +1,24 @@
 .dashboard-container {
-  margin-top: 20px;
+  padding: 10px;
 }
 
-/* Organiza os cards lado a lado */
+/* Os cards se organizam em linha em telas grandes e coluna em telas pequenas */
 .cards-grid {
   display: flex;
+  flex-wrap: wrap; /* Permite quebrar linha se não couber */
   gap: 20px;
-  flex-wrap: wrap; /* Se a tela for pequena, os cards descem para a próxima linha */
+  margin-bottom: 30px;
+  justify-content: space-between;
 }
 
-/* Visual bonito para os cartões */
 .info-card {
-  flex: 1; /* Faz todos os cards terem a mesma largura */
-  min-width: 250px;
-  border-left: 5px solid #3f51b5; /* Cria uma barrinha lateral colorida (estilo Material) */
+  flex: 1 1 calc(33.333% - 20px); /* Tenta ocupar 1/3 da tela */
+  min-width: 280px; /* Não deixa o card ficar pequeno demais */
 }
 
-/* Muda a cor da barrinha lateral do segundo e terceiro card */
-.info-card:nth-child(2) { border-left-color: #ff4081; }
-.info-card:nth-child(3) { border-left-color: #f44336; }
-
-/* O número grandão no meio do card */
 .card-value {
-  font-size: 3rem;
-  margin: 10px 0 0 0;
-  text-align: center;
-  color: #444;
-}
-
-.titulo-secao {
-  margin-top: 40px;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-table {
-  width: 100%;
-}
-
-/* Estilizando as etiquetas de status (como em sistemas de chamados/tickets) */
-.status-badge {
-  padding: 5px 10px;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-.status-ok {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-}
-
-.status-pendente {
-  background-color: #fff3e0;
-  color: #ef6c00;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: right;
+  margin: 10px 0;
 }

@@ -1,19 +1,27 @@
-.tabela-container {
-  margin-top: 20px;
+/* 1. Alvo direto no container do R$ para dar o distanciamento */
+.mat-mdc-form-field-prefix {
+  padding-right: 12px !important; /* Cria o espaço entre o R$ e o número */
+  padding-left: 4px;              /* Afasta o R$ da borda esquerda */
 }
 
-.cabecalho-pagina {
+/* 2. Estilização do texto do R$ */
+span[matPrefix] {
+  font-weight: 500;
+  color: #555;
   display: flex;
-  justify-content: space-between; /* Joga o título para a esquerda e o botão para a direita */
-  align-items: center; /* Alinha os dois verticalmente no centro */
-  margin-bottom: 20px;
+  align-items: center;
+  padding: 5px;
 }
 
-.cabecalho-pagina h2 {
-  margin: 0;
-  color: #333;
+/* 3. Ajuste para o texto digitado não ficar "grudado" */
+.mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control {
+  padding-left: 4px !important;
 }
 
-table {
-  width: 100%;
+/* 4. Garantir que o formulário não quebre em telas menores */
+.servico-form {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
 }

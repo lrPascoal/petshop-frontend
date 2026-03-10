@@ -1,15 +1,68 @@
-<mat-toolbar color="primary">
-  <span>🐾 PetShop Agenda</span>
+<mat-toolbar color="primary" *ngIf="authService.isLogado()">
   
-  <span class="spacer"></span>
-  
-  <button mat-button routerLink="/tutor/meus-pets">Meus Pets</button>
-  <button mat-button routerLink="/tutor/agendar">Agendar Banho</button>
-  
-  <button mat-button routerLink="/admin/dashboard">Painel Admin</button>
-  <button mat-button routerLink="/admin/servicos">Serviços</button>
+  <span class="logo">🐾 PetShop</span>
+
+  <span class="espacador"></span>
+
+  <div class="menu-desktop">
+    <ng-container *ngIf="authService.getPerfilAtual() === 'ADMIN'">
+      <button mat-button routerLink="/admin/dashboard">Painel Admin</button>
+      <button mat-button routerLink="/admin/servicos">Serviços</button>
+    </ng-container>
+
+    <ng-container *ngIf="authService.getPerfilAtual() === 'TUTOR'">
+      <button mat-button routerLink="/tutor/meus-pets">Meus Pets</button>
+      <button mat-button routerLink="/tutor/agendar">Agendar Banho</button>
+    </ng-container>
+  </div>
+
+  <div class="menu-mobile">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    
+    <mat-menu #menu="matMenu">
+      <ng-container *ngIf="authService.getPerfilAtual() === 'ADMIN'">
+        <button mat-menu-item routerLink="/admin/dashboard">
+          <mat-icon>dashboard</mat-icon>
+          <span>Painel Admin</span>
+        </button>
+        <button mat-menu-item routerLink="/admin/servicos">
+          <mat-icon>settings</mat-icon>
+          <span>Serviços</span>
+        </button>
+      </ng-container>
+
+      <ng-container *ngIf="authService.getPerfilAtual() === 'TUTOR'">
+        <button mat-menu-item routerLink="/tutor/meus-pets">
+          <mat-icon>pets</mat-icon>
+          <span>Meus Pets</span>
+        </button>
+        <button mat-menu-item routerLink="/tutor/agendar">
+          <mat-icon>calendar_today</mat-icon>
+          <span>Agendar Banho</span>
+        </button>
+      </ng-container>
+
+      <mat-divider></mat-divider>
+      
+      <button mat-menu-item (click)="sair()">
+        <mat-icon>logout</mat-icon>
+        <span>Sair</span>
+      </button>
+    </mat-menu>
+  </div>
+
+  <button mat-icon-button (click)="sair()" class="menu-desktop" title="Sair">
+    <mat-icon>logout</mat-icon>
+  </button>
+
 </mat-toolbar>
 
-<main class="content-container">
+<main class="conteudo-principal">
   <router-outlet></router-outlet>
 </main>
+
+<footer class="rodape" *ngIf="authService.isLogado()">
+  <p>© 2026 PetShop System | Desenvolvido por [Seu Nome] - ADS</p>
+</footer>

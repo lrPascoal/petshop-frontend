@@ -1,25 +1,57 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+
+import { ServicosPetService, Servico } from '../../../services/servicos-pet';
 
 @Component({
   selector: 'app-gerenciar-servicos',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule],
+  imports: [
+    CommonModule, ReactiveFormsModule, MatTableModule, 
+    MatButtonModule, MatInputModule, MatIconModule, MatCardModule
+  ],
   templateUrl: './gerenciar-servicos.html',
   styleUrl: './gerenciar-servicos.css'
 })
-export class GerenciarServicos {
-  // As colunas que vão aparecer na tabela
-  colunasExibidas: string[] = ['nome', 'descricao', 'preco', 'duracao', 'acoes'];
+export class GerenciarServicos implements OnInit {
+  servicoForm: FormGroup;
+  colunas: string[] = ['nome', 'preco', 'acoes'];
+  listaDeServicos: Servico[] = [];
 
-  // Mock do catálogo de serviços do Pet Shop
-  listaServicos = [
-    { id: 1, nome: 'Banho Simples', descricao: 'Lavagem completa com shampoo neutro.', preco: 50.00, duracao: '40 min' },
-    { id: 2, nome: 'Banho e Tosa', descricao: 'Lavagem + Tosa higiênica e corte de unhas.', preco: 100.00, duracao: '1h 30m' },
-    { id: 3, nome: 'Hidratação', descricao: 'Banho + Máscara de hidratação profunda.', preco: 80.00, duracao: '1h 00m' },
-    { id: 4, nome: 'Corte de Unhas', descricao: 'Apenas o corte seguro das unhas.', preco: 20.00, duracao: '15 min' }
-  ];
+  constructor(private fb: FormBuilder, private servicoService: ServicosPetService) {
+    this.servicoForm = this.fb.group({
+      nome: ['', Validators.required],
+      preco: ['', [Validators.required, Validators.min(1)]]
+    });
+  }
+
+  ngOnInit(): void {
+    this.atualizarTabela();
+  }
+
+  atualizarTabela() {
+    this.listaDeServicos = [...this.servicoService.getServicos()];
+  }
+
+  salvar() {
+    if (this.servicoForm.valid) {
+      this.servicoService.adicionar(this.servicoForm.value);
+      this.servicoForm.reset();
+      this.atualizarTabela();
+    }
+  }
+
+  excluir(id: number) {
+    if (confirm('Deseja remover este serviço?')) {
+      this.servicoService.remover(id);
+      this.atualizarTabela();
+    }
+  }
 }

@@ -1,0 +1,43 @@
+<div class="login-container">
+  <mat-card class="login-card mat-elevation-z8">
+    <mat-card-header>
+      <div mat-card-avatar class="logo-avatar">
+        <mat-icon>pets</mat-icon>
+      </div>
+      <mat-card-title>PetShop System</mat-card-title>
+      <mat-card-subtitle>Acesso ao Sistema</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="erro-box" *ngIf="mensagemErro">
+        {{ mensagemErro }}
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="entrar()" class="formulario-login">
+        
+        <mat-form-field appearance="outline">
+          <mat-label>E-mail</mat-label>
+          <input matInput formControlName="email" placeholder="Ex: tutor@email.com">
+          <mat-icon matSuffix>email</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+          <input matInput type="password" formControlName="senha">
+          <mat-icon matSuffix>lock</mat-icon>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" class="btn-login" [disabled]="loginForm.invalid">
+          Entrar
+        </button>
+
+      </form>
+      
+      <div class="dicas-acesso">
+        <small>Dica para testes:</small><br>
+        <small><b>Admin:</b> admin@petshop.com | <b>Senha:</b> 123</small><br>
+        <small><b>Tutor:</b> tutor@email.com | <b>Senha:</b> 123</small>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

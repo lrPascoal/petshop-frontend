@@ -1,9 +1,37 @@
-.spacer {
-  flex: 1 1 auto;
+/* Configurações Gerais */
+.espacador { flex: 1 1 auto; }
+
+.conteudo-principal {
+  margin: 20px auto;
+  max-width: 1200px;
+  padding: 0 20px;
+  min-height: calc(100vh - 150px); /* Garante espaço para o footer */
 }
 
-.content-container {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+/* Lógica do Menu Mobile vs Desktop */
+.menu-mobile { display: none; } /* Esconde o menu de hambúrguer por padrão */
+
+@media (max-width: 768px) {
+  .menu-desktop { display: none; } /* Esconde os botões de texto no celular */
+  .menu-mobile { display: block; } /* Mostra o ícone de hambúrguer no celular */
+  
+  .logo { font-size: 1.1rem; }
+}
+
+/* Estilo do Rodapé */
+.rodape {
+  background-color: #f5f5f5;
+  color: #666;
+  text-align: center;
+  padding: 15px 0;
+  border-top: 1px solid #ddd;
+  margin-top: 40px;
+  font-size: 0.9rem;
+}
+
+/* Ajuste das tabelas para não quebrarem o layout */
+.mat-elevation-z4 {
+  width: 100%;
+  display: block;
+  overflow-x: auto; /* Cria barra de scroll lateral SÓ na tabela se ela for larga */
 }
