@@ -3,34 +3,30 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
-
-// 1. IMPORTAÇÕES PARA O MODAL
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ListaAgendamentosModal } from './lista-agendamentos-modal/lista-agendamentos-modal';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Import do Spinner
 
-// 2. IMPORTAÇÕES DO RXJS
 import { Observable, map, take } from 'rxjs';
 
 import { AgendamentoService } from '../../../services/agendamento';
 import { Agendamento } from '../../../models/model';
+import { ListaAgendamentosModal } from './lista-agendamentos-modal/lista-agendamentos-modal';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  // Adicionamos o MatDialogModule aqui nos imports
   imports: [
     CommonModule, 
     MatCardModule, 
     MatIconModule, 
     MatTableModule, 
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule // Registro do componente
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
 export class Dashboard implements OnInit {
-  
-  // Observables para os dados assíncronos
   agendaHoje$!: Observable<Agendamento[]>;
   totalAgendamentos$!: Observable<number>;
 
@@ -43,37 +39,30 @@ export class Dashboard implements OnInit {
   
   constructor(
     private agendamentoService: AgendamentoService,
-    private dialog: MatDialog // 3. INJETAMOS O SERVIÇO DE DIALOG
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-  // Filtra para exibir apenas o que o pet shop ainda tem que fazer
-  this.agendaHoje$ = this.agendamentoService.getAgendamentos().pipe(
-    map(lista => lista.filter(a => a.status !== 'Concluído'))
-  );
+    // Filtramos para exibir apenas o que não foi concluído
+    this.agendaHoje$ = this.agendamentoService.getAgendamentos().pipe(
+      map(lista => lista.filter(a => a.status !== 'Concluído'))
+    );
 
-  this.totalAgendamentos$ = this.agendaHoje$.pipe(
-    map(lista => lista.length)
-  );
-}
+    this.totalAgendamentos$ = this.agendaHoje$.pipe(
+      map(lista => lista.length)
+    );
+  }
 
-  /**
-   * 4. FUNÇÃO PARA ABRIR O MODAL
-   * Usamos o .pipe(take(1)) para pegar a lista atual de agendamentos 
-   * e passá-la para dentro do modal.
-   */
   abrirDetalhes(): void {
-  this.agendaHoje$.pipe(take(1)).subscribe(agendamentos => {
-    const dialogRef = this.dialog.open(ListaAgendamentosModal, {
-      width: '480px',
-      data: [...agendamentos] // Passamos uma cópia da lista
-    });
+    this.agendaHoje$.pipe(take(1)).subscribe(agendamentos => {
+      const dialogRef = this.dialog.open(ListaAgendamentosModal, {
+        width: '480px',
+        data: [...agendamentos]
+      });
 
-    // ESTA PARTE É A CHAVE:
-    dialogRef.afterClosed().subscribe(() => {
-      // Quando o modal fecha, chamamos o ngOnInit para atualizar a tabela e os cards
-      this.ngOnInit(); 
+      dialogRef.afterClosed().subscribe(() => {
+        this.ngOnInit(); // Sincroniza a tabela ao fechar o modal
+      });
     });
-  });
-}
+  }
 }
