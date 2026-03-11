@@ -22,7 +22,8 @@ export class AgendamentoService {
   }
 
   // Atualiza status (ex: de 'Aguardando' para 'Concluído')
-  atualizarStatus(id: number, status: string): Observable<any> {
-    return this.http.patch(`${this.API_URL}/${id}`, { status });
-  }
+atualizarStatus(id: number, novoStatus: string): Observable<any> {
+  // O PATCH altera apenas o campo 'status' no db.json
+  return this.http.patch(`${this.API_URL}/${id}`, { status: novoStatus });
+}
 }

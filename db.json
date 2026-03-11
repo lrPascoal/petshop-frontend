@@ -1,0 +1,53 @@
+{
+  "pets": [
+    {
+      "id": "1",
+      "nome": "Rex",
+      "especie": "Cachorro",
+      "raca": "Labrador",
+      "peso": 25,
+      "tutorId": 1
+    },
+    {
+      "id": "0",
+      "nome": "teste",
+      "especie": "Cachorro",
+      "raca": "teste",
+      "peso": 8,
+      "tutorId": 1
+    }
+  ],
+  "servicos": [
+    {
+      "id": "1",
+      "nome": "Banho",
+      "preco": 50
+    },
+    {
+      "id": "bb11",
+      "nome": "Tosa",
+      "preco": 80
+    }
+  ],
+  "agendamentos": [
+    {
+      "id": "608d",
+      "petId": "0",
+      "petNome": "teste",
+      "servicoId": "bb11",
+      "servicoNome": "Tosa",
+      "dataHora": "2026-03-10T08:00",
+      "status": "Concluído"
+    },
+    {
+      "id": "3ec8",
+      "petId": "0",
+      "petNome": "teste",
+      "servicoId": "1",
+      "servicoNome": "Banho",
+      "dataHora": "0026-02-10T10:00",
+      "status": "Concluído"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

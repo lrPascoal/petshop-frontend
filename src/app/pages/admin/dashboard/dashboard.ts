@@ -47,14 +47,15 @@ export class Dashboard implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Inicializamos o fluxo de dados
-    this.agendaHoje$ = this.agendamentoService.getAgendamentos();
+  // Filtra para exibir apenas o que o pet shop ainda tem que fazer
+  this.agendaHoje$ = this.agendamentoService.getAgendamentos().pipe(
+    map(lista => lista.filter(a => a.status !== 'Concluído'))
+  );
 
-    // Criamos a contagem para o card
-    this.totalAgendamentos$ = this.agendaHoje$.pipe(
-      map(lista => lista.length)
-    );
-  }
+  this.totalAgendamentos$ = this.agendaHoje$.pipe(
+    map(lista => lista.length)
+  );
+}
 
   /**
    * 4. FUNÇÃO PARA ABRIR O MODAL
@@ -62,11 +63,17 @@ export class Dashboard implements OnInit {
    * e passá-la para dentro do modal.
    */
   abrirDetalhes(): void {
-    this.agendaHoje$.pipe(take(1)).subscribe(agendamentos => {
-      this.dialog.open(ListaAgendamentosModal, {
-        width: '450px',
-        data: agendamentos // Enviamos a lista para o componente do Modal
-      });
+  this.agendaHoje$.pipe(take(1)).subscribe(agendamentos => {
+    const dialogRef = this.dialog.open(ListaAgendamentosModal, {
+      width: '480px',
+      data: [...agendamentos] // Passamos uma cópia da lista
     });
-  }
+
+    // ESTA PARTE É A CHAVE:
+    dialogRef.afterClosed().subscribe(() => {
+      // Quando o modal fecha, chamamos o ngOnInit para atualizar a tabela e os cards
+      this.ngOnInit(); 
+    });
+  });
+}
 }
