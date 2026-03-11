@@ -1,59 +1,59 @@
-# PetshopFrontend
+# 🐾 PetShop - Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.2.
 
-## Development server
 
-To start a local development server, run:
+## 🚀 Tecnologias Utilizadas
 
-```bash
+- **Angular 20.3.2:** Versão mais atual, utilizando componentes Standalone e Signals.
+- **RxJS:** Gerenciamento de fluxos de dados assíncronos com Observables.
+- **Angular Material:** Biblioteca de componentes de UI de alta fidelidade.
+- **JSON Server:** API REST simulada para persistência de dados em arquivo `db.json`.
+- **TypeScript:** Tipagem estrita para maior segurança no desenvolvimento.
+
+## ✨ Funcionalidades Principais
+
+### 🏠 Painel Administrativo (Admin)
+- **Dashboard Reativo:** Cards com indicadores de faturamento e total de agendamentos atualizados via API.
+- **Gestão de Agendamentos:** Modal interativo que permite visualizar detalhes e alterar o status do serviço em tempo real.
+- **Ciclo de Atendimento:** Transição dinâmica de status: `Aguardando` ➔ `Em andamento` ➔ `Concluído`.
+- **Filtro Automático:** Remoção inteligente de serviços concluídos da visão principal.
+
+### 👤 Área do Tutor
+- **Cadastro de Pets:** CRUD completo de animais com validação de formulários reativos.
+- **Agendamento Inteligente:** Seleção de pets e serviços baseada em dados dinâmicos do servidor.
+
+## 🛠️ Arquitetura e Boas Práticas
+
+- **Clean Code:** Separação entre componentes (visão) e serviços (lógica de negócio).
+- **Programação Reativa:** Uso extensivo do Pipe `async` para gerenciamento automático de subscrições.
+- **Sincronização de Estado:** Comunicação entre componentes (Dashboard e Modal) via hooks de fechamento de diálogo.
+- **HTTP Methods:** Implementação correta de verbos HTTP (`GET`, `POST`, `PATCH`, `DELETE`).
+
+
+
+## 🔧 Como Executar o Projeto
+
+1. **Clonar o repositório:**
+
+Instalar as dependências:
+
+Bash
+npm install
+Subir a API simulada (JSON Server):
+
+Bash
+npx json-server --watch db.json --port 3000
+Rodar o Front-end:
+
+Bash
 ng serve
-```
+Acesse: http://localhost:4200
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+📈 Próximos Passos
+[ ] Implementação de Autenticação JWT.
 
-## Code scaffolding
+[ ] Migração do Backend para Java Spring Boot.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+[ ] Implementação de Relatórios de Faturamento Mensal.
 
-```bash
-ng generate component component-name
-```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
