@@ -10,10 +10,12 @@ export interface Pet {
 
 
 export interface Agendamento {
-  id: number;
-  petNome: string;     
-  servicoNome: string; 
-  data: string;        // Pode ser string ou Date
-  hora: string;
-  status: string;      // 'Aguardando', 'Em andamento', 'Concluído'
+  id?: number;
+  petId: number;
+  petNome: string;     // Guardamos o nome para facilitar a exibição na tabela
+  servicoId: number;
+  servicoNome: string;
+  dataHora: string;
+  status: 'Aguardando' | 'Em andamento' | 'Concluído';
 }
+
