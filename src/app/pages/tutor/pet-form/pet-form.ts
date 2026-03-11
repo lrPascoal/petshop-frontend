@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-// Adicionamos o ActivatedRoute aqui
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,17 +22,15 @@ import { Pet } from '../../../models/model';
   templateUrl: './pet-form.html',
   styleUrl: './pet-form.css'
 })
-export class PetForm implements OnInit { // Adicionamos o OnInit
+export class PetForm implements OnInit {
   petForm: FormGroup;
-  
-  // Variável para guardar o ID caso estejamos no modo "Edição"
   petIdEdicao: number | null = null; 
 
   constructor(
     private fb: FormBuilder,
     private petService: PetService,
     private router: Router,
-    private route: ActivatedRoute // Ferramenta para ler a URL atual
+    private route: ActivatedRoute
   ) {
     this.petForm = this.fb.group({
       nome: ['', Validators.required],
@@ -43,27 +40,24 @@ export class PetForm implements OnInit { // Adicionamos o OnInit
     });
   }
 
-  // Roda assim que a tela abre
   ngOnInit(): void {
-    // 1. Olha para a URL e tenta pegar o parâmetro 'id'
     const idParam = this.route.snapshot.paramMap.get('id');
     
-    // 2. Se o ID existir na URL, significa que entramos pelo botão "Editar"
     if (idParam) {
-      this.petIdEdicao = Number(idParam); // Converte de texto para número
+      this.petIdEdicao = Number(idParam);
       
-      // 3. Pede para o gerente (Service) buscar os dados desse pet
-      const petParaEditar = this.petService.getPetById(this.petIdEdicao);
-
-      if (petParaEditar) {
-        // 4. MÁGICA: O patchValue preenche os campos do formulário automaticamente!
-        this.petForm.patchValue({
-          nome: petParaEditar.nome,
-          especie: petParaEditar.especie,
-          raca: petParaEditar.raca,
-          peso: petParaEditar.peso
-        });
-      }
+      // MUDANÇA AQUI: Agora nos inscrevemos para receber o pet do servidor
+      this.petService.getPetById(this.petIdEdicao).subscribe({
+        next: (petParaEditar) => {
+          this.petForm.patchValue({
+            nome: petParaEditar.nome,
+            especie: petParaEditar.especie,
+            raca: petParaEditar.raca,
+            peso: petParaEditar.peso
+          });
+        },
+        error: (err) => console.error('Erro ao buscar pet para edição', err)
+      });
     }
   }
 
@@ -71,33 +65,32 @@ export class PetForm implements OnInit { // Adicionamos o OnInit
     if (this.petForm.valid) {
       const dadosDoFormulario = this.petForm.value;
 
-      // Se temos um ID guardado, o botão clicado foi o de Atualizar
       if (this.petIdEdicao) {
+        // MODO EDIÇÃO (PUT)
         const petAtualizado: Pet = {
+          ...dadosDoFormulario, // Pega todos os campos do form
           id: this.petIdEdicao,
-          nome: dadosDoFormulario.nome,
-          especie: dadosDoFormulario.especie,
-          raca: dadosDoFormulario.raca,
-          peso: dadosDoFormulario.peso,
           tutorId: 1
         };
-        this.petService.atualizarPet(petAtualizado);
+        
+        // MUDANÇA AQUI: Aguardamos a resposta do servidor antes de navegar
+        this.petService.atualizarPet(petAtualizado).subscribe(() => {
+          this.router.navigate(['/tutor/meus-pets']);
+        });
       
-      // Se NÃO temos ID, o botão clicado foi o de Salvar (Novo Pet)
       } else {
+        // MODO CADASTRO (POST)
         const novoPet: Pet = {
-          id: 0,
-          nome: dadosDoFormulario.nome,
-          especie: dadosDoFormulario.especie,
-          raca: dadosDoFormulario.raca,
-          peso: dadosDoFormulario.peso,
+          ...dadosDoFormulario,
+          id: 0, // O JSON Server/Banco de dados vai gerar o ID real
           tutorId: 1
         };
-        this.petService.adicionarPet(novoPet);
+        
+        // MUDANÇA AQUI: Aguardamos a resposta do servidor antes de navegar
+        this.petService.adicionarPet(novoPet).subscribe(() => {
+          this.router.navigate(['/tutor/meus-pets']);
+        });
       }
-
-      // De qualquer forma, volta para a tabela no final
-      this.router.navigate(['/tutor/meus-pets']);
       
     } else {
       this.petForm.markAllAsTouched();

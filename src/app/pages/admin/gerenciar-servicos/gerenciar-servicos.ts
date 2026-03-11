@@ -37,21 +37,29 @@ export class GerenciarServicos implements OnInit {
   }
 
   atualizarTabela() {
-    this.listaDeServicos = [...this.servicoService.getServicos()];
+    // Nos inscrevemos para receber a lista atualizada do servidor
+    this.servicoService.getServicos().subscribe({
+      next: (dados) => {
+        this.listaDeServicos = dados;
+      },
+      error: (err) => console.error('Erro ao buscar serviços:', err)
+    });
   }
 
   salvar() {
     if (this.servicoForm.valid) {
-      this.servicoService.adicionar(this.servicoForm.value);
-      this.servicoForm.reset();
-      this.atualizarTabela();
+      this.servicoService.adicionar(this.servicoForm.value).subscribe(() => {
+        this.servicoForm.reset();
+        this.atualizarTabela(); // Recarrega a lista após salvar
+      });
     }
   }
 
   excluir(id: number) {
     if (confirm('Deseja remover este serviço?')) {
-      this.servicoService.remover(id);
-      this.atualizarTabela();
+      this.servicoService.remover(id).subscribe(() => {
+        this.atualizarTabela(); // Recarrega a lista após deletar
+      });
     }
   }
 }

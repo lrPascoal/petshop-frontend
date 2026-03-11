@@ -1,25 +1,11 @@
-.form-container {
+.form-agendar {
   display: flex;
-  justify-content: center;
-  margin-top: 40px;
-}
-
-mat-card {
-  width: 100%;
-  max-width: 500px;
+  flex-direction: column; /* Coloca um campo abaixo do outro */
+  gap: 15px;             /* Espaçamento entre os campos */
   padding: 20px;
 }
 
-.meu-formulario {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-.botoes-container {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 10px;
+mat-card {
+  max-width: 500px;      /* Evita que o card fique largo demais em monitores grandes */
+  margin: 2em auto;      /* Centraliza o card na tela */
 }

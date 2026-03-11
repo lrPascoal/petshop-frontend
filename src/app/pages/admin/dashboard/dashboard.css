@@ -22,3 +22,13 @@
   text-align: right;
   margin: 10px 0;
 }
+
+.clicavel {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.clicavel:hover {
+  transform: scale(1.02); /* Dá um leve zoom ao passar o mouse */
+  background-color: #fdfdfd;
+}

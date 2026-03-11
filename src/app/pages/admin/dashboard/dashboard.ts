@@ -4,38 +4,69 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 
-// Importando o Service e a Interface
+// 1. IMPORTAÇÕES PARA O MODAL
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ListaAgendamentosModal } from './lista-agendamentos-modal/lista-agendamentos-modal';
+
+// 2. IMPORTAÇÕES DO RXJS
+import { Observable, map, take } from 'rxjs';
+
 import { AgendamentoService } from '../../../services/agendamento';
 import { Agendamento } from '../../../models/model';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatIconModule, MatTableModule],
+  // Adicionamos o MatDialogModule aqui nos imports
+  imports: [
+    CommonModule, 
+    MatCardModule, 
+    MatIconModule, 
+    MatTableModule, 
+    MatDialogModule
+  ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
-export class Dashboard implements OnInit { // Adicionamos o OnInit
+export class Dashboard implements OnInit {
+  
+  // Observables para os dados assíncronos
+  agendaHoje$!: Observable<Agendamento[]>;
+  totalAgendamentos$!: Observable<number>;
+
   resumo = {
-    agendamentosHoje: 0, // Vamos atualizar isso dinamicamente depois
     petsCadastrados: 42,
     faturamentoDia: 350.00
   };
 
-  // Atenção aqui: Na tabela do HTML as colunas se chamavam 'pet' e 'servico'. 
-  // Na nossa nova interface, chamam-se 'petNome' e 'servicoNome'. Precisamos atualizar!
   colunasAgenda: string[] = ['horario', 'petNome', 'servicoNome', 'status'];
   
-  // A lista começa vazia
-  agendaHoje: Agendamento[] = [];
+  constructor(
+    private agendamentoService: AgendamentoService,
+    private dialog: MatDialog // 3. INJETAMOS O SERVIÇO DE DIALOG
+  ) {}
 
-  // Injetamos o serviço
-  constructor(private agendamentoService: AgendamentoService) {}
-
-  // Quando a tela carregar, buscamos a lista no serviço
   ngOnInit(): void {
-    this.agendaHoje = this.agendamentoService.getAgendamentos();
-    // Atualiza o contador do cartãozinho lá em cima
-    this.resumo.agendamentosHoje = this.agendaHoje.length; 
+    // Inicializamos o fluxo de dados
+    this.agendaHoje$ = this.agendamentoService.getAgendamentos();
+
+    // Criamos a contagem para o card
+    this.totalAgendamentos$ = this.agendaHoje$.pipe(
+      map(lista => lista.length)
+    );
+  }
+
+  /**
+   * 4. FUNÇÃO PARA ABRIR O MODAL
+   * Usamos o .pipe(take(1)) para pegar a lista atual de agendamentos 
+   * e passá-la para dentro do modal.
+   */
+  abrirDetalhes(): void {
+    this.agendaHoje$.pipe(take(1)).subscribe(agendamentos => {
+      this.dialog.open(ListaAgendamentosModal, {
+        width: '450px',
+        data: agendamentos // Enviamos a lista para o componente do Modal
+      });
+    });
   }
 }

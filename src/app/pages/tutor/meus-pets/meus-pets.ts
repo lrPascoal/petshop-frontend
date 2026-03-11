@@ -24,24 +24,27 @@ export class MeusPets implements OnInit {
     this.carregarPets();
   }
 
-  // Criamos uma função separada para carregar a lista, assim podemos reutilizá-la
   carregarPets(): void {
-    // O uso dos colchetes com três pontos [...array] cria uma nova referência de memória.
-    // Isso "acorda" a tabela do Angular Material e força ela a se redesenhar na tela.
-    this.listaDePets = [...this.petService.getPets()];
+    // Chamamos o serviço (o rádio) e nos sintonizamos (subscribe)
+    this.petService.getPets().subscribe({
+      next: (dados) => {
+        this.listaDePets = dados; // Quando o dado chega, ele preenche a tabela
+        console.log('Pets carregados da API com sucesso!');
+      },
+      error: (err) => {
+        console.error('Erro ao buscar pets:', err);
+        // Dica: Se o seu servidor (JSON Server) não estiver ligado, 
+        // o erro vai cair aqui!
+      }
+    });
   }
 
-  // A função que será chamada quando o usuário clicar na lixeira
   excluirPet(id: number, nome: string): void {
-    // O confirm() cria aquela caixinha de alerta nativa do navegador (Ok / Cancelar)
-    const confirmacao = confirm(`Tem certeza que deseja remover o pet ${nome}?`);
-    
-    if (confirmacao) {
-      // 1. Manda o Serviço apagar o dado
-      this.petService.removerPet(id);
-      
-      // 2. Recarrega a tabela para o pet sumir da tela instantaneamente
-      this.carregarPets();
+    if (confirm(`Deseja realmente remover o pet ${nome}?`)) {
+      // No HttpClient, até o DELETE precisa do .subscribe() para ser disparado
+      this.petService.removerPet(id).subscribe(() => {
+        this.carregarPets(); // Recarrega a lista após a exclusão no banco
+      });
     }
   }
 }
