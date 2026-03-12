@@ -13,7 +13,7 @@ export interface Servico {
 })
 export class ServicosPetService {
   // Rota para a seção de serviços no seu db.json
-  private readonly API_URL = 'https://petshop-api-eeup.onrender.com';
+  private readonly API_URL = 'https://petshop-api-eeup.onrender.com/servicos';
 
   constructor(private http: HttpClient) { }
 
