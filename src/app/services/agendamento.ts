@@ -7,7 +7,7 @@ import { Agendamento } from '../models/model';
   providedIn: 'root'
 })
 export class AgendamentoService {
-  private readonly API_URL = 'http://localhost:3000/agendamentos';
+  private readonly API_URL = 'https://petshop-api-eeup.onrender.com';
 
   constructor(private http: HttpClient) { }
 

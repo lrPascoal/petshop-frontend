@@ -47,6 +47,15 @@
       "servicoNome": "Banho",
       "dataHora": "0026-02-10T10:00",
       "status": "Concluído"
+    },
+    {
+      "id": "fb83",
+      "petId": "0",
+      "petNome": "teste",
+      "servicoId": "1",
+      "servicoNome": "Banho",
+      "dataHora": "2026-02-10T11:00",
+      "status": "Aguardando"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

@@ -8,7 +8,7 @@ import { Pet } from '../models/model';
 })
 export class PetService {
   // O JSON Server costuma rodar na porta 3000 por padrão no Linux
-  private readonly API_URL = 'http://localhost:3000/pets';
+  private readonly API_URL = 'https://petshop-api-eeup.onrender.com';
 
   constructor(private http: HttpClient) { }
 
