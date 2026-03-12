@@ -24,10 +24,10 @@ import { MatDividerModule } from '@angular/material/divider';
     MatMenuModule,
     MatDividerModule
   ],
-  templateUrl: './app.html', // Verifique se o nome aqui é app.html ou app.component.html
+  templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App { // Classe renomeada para App como você corrigiu
+export class App { 
   title = 'PetShop System';
 
   // O 'public' é OBRIGATÓRIO para o HTML enxergar o serviço
