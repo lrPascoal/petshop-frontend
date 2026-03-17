@@ -2,3 +2,6 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.sucesso-snackbar { background: #2e7d32 !important; color: white !important; }
+.erro-snackbar { background: #d32f2f !important; color: white !important; }
