@@ -7,23 +7,38 @@ import { Agendamento } from '../models/model';
   providedIn: 'root'
 })
 export class AgendamentoService {
+  // Sua API no Render
   private readonly API_URL = 'https://petshop-api-eeup.onrender.com/agendamentos';
 
   constructor(private http: HttpClient) { }
 
-  // Busca todos os agendamentos (útil para o Admin ver a agenda)
+  /**
+   * Busca todos os agendamentos (Usado pelo Dashboard do Admin)
+   */
   getAgendamentos(): Observable<Agendamento[]> {
     return this.http.get<Agendamento[]>(this.API_URL);
   }
 
-  // Cria um novo agendamento no db.json
-  agendar(novo: Agendamento): Observable<Agendamento> {
+  /**
+   * Cria um novo agendamento (Usado pela tela de Agendar do Tutor)
+   * Ajustado para 'criarAgendamento' para bater com o seu Componente
+   */
+  criarAgendamento(novo: Agendamento): Observable<Agendamento> {
     return this.http.post<Agendamento>(this.API_URL, novo);
   }
 
-  // Atualiza status (ex: de 'Aguardando' para 'Concluído')
-atualizarStatus(id: number, novoStatus: string): Observable<any> {
-  // O PATCH altera apenas o campo 'status' no db.json
-  return this.http.patch(`${this.API_URL}/${id}`, { status: novoStatus });
-}
+  /**
+   * Atualiza apenas o status (Usado pelo Admin para confirmar/concluir)
+   */
+  atualizarStatus(id: number, novoStatus: string): Observable<Agendamento> {
+    // O PATCH é ideal aqui pois altera apenas um pedaço do objeto
+    return this.http.patch<Agendamento>(`${this.API_URL}/${id}`, { status: novoStatus });
+  }
+
+  /**
+   * Remove um agendamento (Cancelamento)
+   */
+  cancelarAgendamento(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/${id}`);
+  }
 }

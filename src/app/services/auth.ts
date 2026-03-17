@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   // Guarda o perfil do usuário logado: 'ADMIN', 'TUTOR' ou null (deslogado)
   private perfilLogado: string | null = null;
 
-  constructor() { }
+  constructor() {}
 
   // Simulação de login no Banco de Dados
   fazerLogin(email: string, senha: string): boolean {
@@ -15,18 +15,18 @@ export class AuthService {
       this.perfilLogado = 'ADMIN';
       console.log('Login efetuado como Administrador');
       return true;
-    } 
-    else if (email === 'tutor@email.com' && senha === '123') {
+    } else if (email === 'tutor@email.com' && senha === '123') {
       this.perfilLogado = 'TUTOR';
       console.log('Login efetuado como Tutor');
       return true;
     }
-    
+
     return false; // Senha ou email errados
   }
 
-  fazerLogout(): void {
-    this.perfilLogado = null;
+  fazerLogout() {
+    localStorage.removeItem('userPetShop');
+    this.perfilLogado = null; // Ajustado de 'usuarioLogado' para 'perfilLogado'
     console.log('Usuário deslogado.');
   }
 
