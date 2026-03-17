@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'; // Cliente de rede
-import { Observable } from 'rxjs'; // Classe para lidar com dados assíncronos
+import { HttpClient } from '@angular/common/http'; 
+import { Observable } from 'rxjs'; 
 import { Pet } from '../models/model';
+import { environment } from '../../environments/environment'; // Importação do environment
 
 @Injectable({
   providedIn: 'root'
 })
 export class PetService {
-  // O JSON Server costuma rodar na porta 3000 por padrão no Linux
-  private readonly API_URL = 'https://petshop-api-eeup.onrender.com/pets';
+  // Agora usamos a URL base vinda do ambiente + o endpoint específico
+  private readonly API_URL = `${environment.apiUrl}/pets`;
 
   constructor(private http: HttpClient) { }
 
-  // Retorna um "cano" que trará um Array de Pets
   getPets(): Observable<Pet[]> {
     return this.http.get<Pet[]>(this.API_URL);
   }
@@ -22,7 +22,6 @@ export class PetService {
   }
 
   adicionarPet(novoPet: Pet): Observable<Pet> {
-    // No POST, enviamos o objeto pet no corpo da requisição
     return this.http.post<Pet>(this.API_URL, novoPet);
   }
 

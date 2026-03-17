@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment'; // Importação do environment
 
 export interface Servico {
   id: number;
@@ -12,8 +13,7 @@ export interface Servico {
   providedIn: 'root'
 })
 export class ServicosPetService {
-  // Rota para a seção de serviços no seu db.json
-  private readonly API_URL = 'https://petshop-api-eeup.onrender.com/servicos';
+  private readonly API_URL = `${environment.apiUrl}/servicos`;
 
   constructor(private http: HttpClient) { }
 

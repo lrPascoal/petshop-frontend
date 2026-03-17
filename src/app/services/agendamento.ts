@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Agendamento } from '../models/model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AgendamentoService {
-  // Sua API no Render
-  private readonly API_URL = 'https://petshop-api-eeup.onrender.com/agendamentos';
+
+  private readonly API_URL = `${environment.apiUrl}/agendamentos`;
 
   constructor(private http: HttpClient) { }
 
