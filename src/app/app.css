@@ -1,37 +1,43 @@
-/* Configurações Gerais */
-.espacador { flex: 1 1 auto; }
+.espacador {
+  flex: 1 1 auto;
+}
+
+.logo {
+  cursor: pointer;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* Responsividade Básica */
+.menu-mobile {
+  display: none;
+}
+
+.menu-desktop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
 .conteudo-principal {
-  margin: 20px auto;
-  max-width: 1200px;
-  padding: 0 20px;
-  min-height: calc(100vh - 150px); /* Garante espaço para o footer */
+  min-height: calc(100vh - 120px); /* Garante que o rodapé fique embaixo */
+  padding: 20px;
 }
 
-/* Lógica do Menu Mobile vs Desktop */
-.menu-mobile { display: none; } /* Esconde o menu de hambúrguer por padrão */
-
-@media (max-width: 768px) {
-  .menu-desktop { display: none; } /* Esconde os botões de texto no celular */
-  .menu-mobile { display: block; } /* Mostra o ícone de hambúrguer no celular */
-  
-  .logo { font-size: 1.1rem; }
-}
-
-/* Estilo do Rodapé */
 .rodape {
-  background-color: #f5f5f5;
-  color: #666;
   text-align: center;
-  padding: 15px 0;
-  border-top: 1px solid #ddd;
-  margin-top: 40px;
-  font-size: 0.9rem;
+  padding: 20px;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 0.8rem;
 }
 
-/* Ajuste das tabelas para não quebrarem o layout */
-.mat-elevation-z4 {
-  width: 100%;
-  display: block;
-  overflow-x: auto; /* Cria barra de scroll lateral SÓ na tabela se ela for larga */
+/* Quando a tela for menor que 768px (Celulares) */
+@media (max-width: 768px) {
+  .menu-desktop {
+    display: none;
+  }
+  .menu-mobile {
+    display: block;
+  }
 }

@@ -1,6 +1,5 @@
 <mat-toolbar color="primary" *ngIf="authService.isLogado()">
-  
-  <span class="logo">🐾 PetShop</span>
+  <span class="logo" routerLink="/">🐾 PetShop</span>
 
   <span class="espacador"></span>
 
@@ -14,49 +13,48 @@
       <button mat-button routerLink="/tutor/meus-pets">Meus Pets</button>
       <button mat-button routerLink="/tutor/agendar">Agendar Banho</button>
     </ng-container>
+
+    <button mat-icon-button (click)="logout()" title="Sair">
+      <mat-icon>logout</mat-icon>
+    </button>
   </div>
 
   <div class="menu-mobile">
     <button mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>menu</mat-icon>
     </button>
-    
+
     <mat-menu #menu="matMenu">
       <ng-container *ngIf="authService.getPerfilAtual() === 'ADMIN'">
         <button mat-menu-item routerLink="/admin/dashboard">
-          <mat-icon>dashboard</mat-icon>
+          <mat-icon color="primary">dashboard</mat-icon>
           <span>Painel Admin</span>
         </button>
         <button mat-menu-item routerLink="/admin/servicos">
-          <mat-icon>settings</mat-icon>
+          <mat-icon color="primary">settings</mat-icon>
           <span>Serviços</span>
         </button>
       </ng-container>
 
       <ng-container *ngIf="authService.getPerfilAtual() === 'TUTOR'">
         <button mat-menu-item routerLink="/tutor/meus-pets">
-          <mat-icon>pets</mat-icon>
+          <mat-icon color="primary">pets</mat-icon>
           <span>Meus Pets</span>
         </button>
         <button mat-menu-item routerLink="/tutor/agendar">
-          <mat-icon>calendar_today</mat-icon>
+          <mat-icon color="primary">calendar_today</mat-icon>
           <span>Agendar Banho</span>
         </button>
       </ng-container>
 
       <mat-divider></mat-divider>
-      
-      <button mat-menu-item (click)="sair()">
+
+      <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
         <span>Sair</span>
       </button>
     </mat-menu>
   </div>
-
-  <button mat-icon-button (click)="sair()" class="menu-desktop" title="Sair">
-    <mat-icon>logout</mat-icon>
-  </button>
-
 </mat-toolbar>
 
 <main class="conteudo-principal">
@@ -64,5 +62,5 @@
 </main>
 
 <footer class="rodape" *ngIf="authService.isLogado()">
-  <p>© 2026 PetShop System | Desenvolvido por [Seu Nome] - ADS</p>
+  <p>© 2026 PetShop System | Desenvolvido por Lucas - ADS</p>
 </footer>
