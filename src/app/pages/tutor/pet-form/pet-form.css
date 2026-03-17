@@ -1,25 +1,63 @@
 .form-container {
-  display: flex;
-  justify-content: center; /* Centraliza o cartão no meio da tela */
-  margin-top: 40px;
-}
-
-mat-card {
-  width: 100%;
-  max-width: 500px; /* Impede que o formulário fique esticado em monitores grandes */
   padding: 20px;
+  max-width: 600px; /* Largura ideal para formulários de leitura rápida */
+  margin: 0 auto;
 }
 
-.meu-formulario {
+.cabecalho-pagina {
   display: flex;
-  flex-direction: column; /* Coloca um campo debaixo do outro */
-  gap: 15px; /* Cria um espaçamento uniforme entre os campos */
-  margin-top: 20px;
-}
-
-.botoes-container {
-  display: flex;
-  justify-content: flex-end; /* Joga os botões para o lado direito */
+  align-items: center;
   gap: 10px;
-  margin-top: 10px;
+  margin-bottom: 25px;
+}
+
+.cabecalho-pagina h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.form-card {
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+}
+
+.pet-form-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+/* Coloca Peso e Espécie lado a lado no PC */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.botoes-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #f1f5f9;
+}
+
+button[mat-flat-button] {
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Mobile: Pilha os campos da .row um em cima do outro */
+@media (max-width: 600px) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
 }

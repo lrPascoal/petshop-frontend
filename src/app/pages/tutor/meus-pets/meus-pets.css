@@ -1,0 +1,106 @@
+/* =========================================
+   CONTAINER E CENTRALIZAÇÃO
+   ========================================= */
+.pets-container {
+  padding: 20px;
+  max-width: 900px; /* Mantém a consistência com o Admin */
+  margin: 0 auto;
+}
+
+/* =========================================
+   CABEÇALHO
+   ========================================= */
+.cabecalho-pagina {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.titulo-secao h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 1.6rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.titulo-secao p {
+  margin: 5px 0 0 34px;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.btn-cadastrar {
+  border-radius: 8px;
+  height: 48px;
+  padding: 0 20px;
+}
+
+/* =========================================
+   TABELA ESTILIZADA
+   ========================================= */
+.tabela-container {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.tabela-pets {
+  width: 100%;
+}
+
+th.mat-header-cell {
+  background-color: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 16px;
+}
+
+td.mat-cell {
+  padding: 16px;
+  color: #334155;
+}
+
+.nome-pet {
+  font-weight: 600;
+  color: #3f51b5;
+}
+
+/* -----------------------------------------
+   Efeito Hover Blindado
+   ----------------------------------------- */
+tr.mat-row, tr.mat-mdc-row {
+  transition: background-color 0.2s ease;
+}
+
+tr.mat-row:hover, tr.mat-mdc-row:hover {
+  background-color: #f1f5f9 !important;
+  cursor: default;
+}
+
+tr.mat-row:hover td.mat-cell, 
+tr.mat-mdc-row:hover td.mat-mdc-cell {
+  background-color: transparent !important;
+}
+
+/* =========================================
+   📱 RESPONSIVIDADE
+   ========================================= */
+@media (max-width: 600px) {
+  .cabecalho-pagina {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .btn-cadastrar {
+    width: 100%;
+  }
+}

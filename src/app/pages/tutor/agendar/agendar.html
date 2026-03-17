@@ -1,38 +1,57 @@
-<div class="container-agendar">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Agendar Serviço 🗓️</mat-card-title>
-    </mat-card-header>
+<div class="agendar-container">
+  
+  <div class="cabecalho-pagina">
+    <h2><mat-icon color="primary">event_available</mat-icon> Agendar Atendimento</h2>
+    <p>Escolha o pet, o serviço e o melhor horário para vocês.</p>
+  </div>
 
+  <mat-card class="form-card mat-elevation-z3">
     <mat-card-content>
-      <form [formGroup]="agendamentoForm" (ngSubmit)="onSubmit()" class="form-agendar">
+      <form [formGroup]="agendamentoForm" (ngSubmit)="confirmarAgendamento()" class="agendar-form">
         
         <mat-form-field appearance="outline">
-          <mat-label>Selecione seu Pet</mat-label>
-          <mat-select formControlName="pet">
-            <mat-option *ngFor="let pet of meusPets" [value]="pet">
-              {{ pet.nome }} ({{ pet.especie }})
+          <mat-label>Qual pet vai ao PetShop?</mat-label>
+          <mat-select formControlName="petId">
+            <mat-option *ngFor="let pet of meusPets" [value]="pet.id">
+              {{ pet.nome }} ({{ pet.raca }})
             </mat-option>
           </mat-select>
+          <mat-icon matPrefix color="primary" style="margin-right: 8px;">pets</mat-icon>
+          <mat-error *ngIf="agendamentoForm.get('petId')?.hasError('required')">Selecione um pet.</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Qual o serviço?</mat-label>
-          <mat-select formControlName="servico">
-            <mat-option *ngFor="let s of servicosDisponiveis" [value]="s">
+          <mat-label>Qual o serviço desejado?</mat-label>
+          <mat-select formControlName="servicoId">
+            <mat-option *ngFor="let s of servicosDisponiveis" [value]="s.id">
               {{ s.nome }} - {{ s.preco | currency:'BRL' }}
             </mat-option>
           </mat-select>
+          <mat-icon matPrefix color="primary" style="margin-right: 8px;">content_cut</mat-icon>
+          <mat-error *ngIf="agendamentoForm.get('servicoId')?.hasError('required')">Selecione um serviço.</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Data e Horário</mat-label>
-          <input matInput type="datetime-local" formControlName="dataHora">
-        </mat-form-field>
+        <div class="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Data</mat-label>
+            <input matInput type="date" formControlName="data" [min]="hoje">
+            <mat-error *ngIf="agendamentoForm.get('data')?.hasError('required')">Escolha a data.</mat-error>
+          </mat-form-field>
 
-        <button mat-raised-button color="primary" [disabled]="agendamentoForm.invalid">
-          Confirmar Agendamento
-        </button>
+          <mat-form-field appearance="outline">
+            <mat-label>Horário</mat-label>
+            <input matInput type="time" formControlName="hora">
+            <mat-error *ngIf="agendamentoForm.get('hora')?.hasError('required')">Escolha o horário.</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="acoes">
+          <button mat-button type="button" routerLink="/tutor/meus-pets">Voltar</button>
+          <button mat-flat-button color="primary" type="submit" [disabled]="agendamentoForm.invalid || enviando">
+            <mat-icon *ngIf="!enviando">check_circle</mat-icon>
+            {{ enviando ? 'Agendando...' : 'Confirmar Agendamento' }}
+          </button>
+        </div>
 
       </form>
     </mat-card-content>

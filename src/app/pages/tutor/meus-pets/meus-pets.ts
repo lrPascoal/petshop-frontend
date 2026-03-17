@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,12 +11,12 @@ import { PetService } from '../../../services/pet';
 @Component({
   selector: 'app-meus-pets',
   standalone: true,
-  imports: [MatTableModule, MatButtonModule, MatIconModule, RouterModule],
-  templateUrl: './meus-pets.html',
+  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule, RouterModule],
+  templateUrl: './meus-pets.html', // <--- Verifique se este arquivo existe na pasta
   styleUrl: './meus-pets.css'
 })
 export class MeusPets implements OnInit {
-  colunasExibidas: string[] = ['nome', 'especie', 'raca', 'acoes'];
+  colunas: string[] = ['nome', 'especie', 'raca', 'acoes'];
   listaDePets: Pet[] = [];
 
   constructor(private petService: PetService) {}
@@ -25,26 +26,15 @@ export class MeusPets implements OnInit {
   }
 
   carregarPets(): void {
-    // Chamamos o serviço (o rádio) e nos sintonizamos (subscribe)
     this.petService.getPets().subscribe({
-      next: (dados) => {
-        this.listaDePets = dados; // Quando o dado chega, ele preenche a tabela
-        console.log('Pets carregados da API com sucesso!');
-      },
-      error: (err) => {
-        console.error('Erro ao buscar pets:', err);
-        // Dica: Se o seu servidor (JSON Server) não estiver ligado, 
-        // o erro vai cair aqui!
-      }
+      next: (dados) => this.listaDePets = dados,
+      error: (err) => console.error('Erro ao buscar pets:', err)
     });
   }
 
-  excluirPet(id: number, nome: string): void {
-    if (confirm(`Deseja realmente remover o pet ${nome}?`)) {
-      // No HttpClient, até o DELETE precisa do .subscribe() para ser disparado
-      this.petService.removerPet(id).subscribe(() => {
-        this.carregarPets(); // Recarrega a lista após a exclusão no banco
-      });
+  excluir(id: number): void {
+    if (confirm('Deseja realmente remover este pet?')) {
+      this.petService.removerPet(id).subscribe(() => this.carregarPets());
     }
   }
 }

@@ -1,11 +1,62 @@
-.form-agendar {
-  display: flex;
-  flex-direction: column; /* Coloca um campo abaixo do outro */
-  gap: 15px;             /* Espaçamento entre os campos */
+.agendar-container {
   padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-mat-card {
-  max-width: 500px;      /* Evita que o card fique largo demais em monitores grandes */
-  margin: 2em auto;      /* Centraliza o card na tela */
+.cabecalho-pagina {
+  margin-bottom: 25px;
+}
+
+.cabecalho-pagina h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 1.6rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.cabecalho-pagina p {
+  margin: 5px 0 0 34px;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.form-card {
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.agendar-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 15px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #f1f5f9;
+}
+
+button[mat-flat-button] {
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+  .row { grid-template-columns: 1fr; }
 }

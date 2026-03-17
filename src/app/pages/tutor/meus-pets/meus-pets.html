@@ -1,42 +1,58 @@
-<div class="tabela-container">
-  <h2>Meus Pets 🐾</h2>
+<div class="pets-container">
+  <div class="cabecalho-pagina">
+    <div class="titulo-secao">
+      <h2><mat-icon color="primary">pets</mat-icon> Meus Pets</h2>
+      <p>Gerencie os peludos cadastrados para agendamentos rápidos.</p>
+    </div>
 
-  <div style="margin-bottom: 20px;">
-    <button mat-raised-button color="accent" routerLink="/tutor/novo-pet">
+    <button mat-flat-button color="primary" routerLink="/tutor/cadastrar-pet" class="btn-cadastrar">
       <mat-icon>add</mat-icon> Cadastrar Novo Pet
     </button>
   </div>
 
-  <table mat-table [dataSource]="listaDePets" class="mat-elevation-z4">
+  <div class="tabela-container mat-elevation-z3">
+    <table mat-table [dataSource]="listaDePets" class="tabela-pets">
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef>Nome do Pet</th>
+        <td mat-cell *matCellDef="let pet">
+          <span class="nome-pet">{{ pet.nome }}</span>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="nome">
-      <th mat-header-cell *matHeaderCellDef> Nome do Pet </th>
-      <td mat-cell *matCellDef="let pet"> {{ pet.nome }} </td>
-    </ng-container>
+      <ng-container matColumnDef="especie">
+        <th mat-header-cell *matHeaderCellDef>Espécie</th>
+        <td mat-cell *matCellDef="let pet">{{ pet.especie }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="especie">
-      <th mat-header-cell *matHeaderCellDef> Espécie </th>
-      <td mat-cell *matCellDef="let pet"> {{ pet.especie }} </td>
-    </ng-container>
+      <ng-container matColumnDef="raca">
+        <th mat-header-cell *matHeaderCellDef>Raça</th>
+        <td mat-cell *matCellDef="let pet">{{ pet.raca }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="raca">
-      <th mat-header-cell *matHeaderCellDef> Raça </th>
-      <td mat-cell *matCellDef="let pet"> {{ pet.raca }} </td>
-    </ng-container>
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef style="text-align: right">Ações</th>
+        <td mat-cell *matCellDef="let pet" style="text-align: right">
+          <button mat-icon-button color="primary" [routerLink]="['/tutor/editar-pet', pet.id]">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" title="Excluir" (click)="excluir(pet.id)">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="acoes">
-      <th mat-header-cell *matHeaderCellDef> Ações </th>
-      <td mat-cell *matCellDef="let pet">
-        <button mat-icon-button color="primary" title="Editar Pet" [routerLink]="['/tutor/editar-pet', pet.id]">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" title="Remover Pet" (click)="excluirPet(pet.id, pet.nome)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+      <tr mat-row *matRowDef="let row; columns: colunas"></tr>
 
-    <tr mat-header-row *matHeaderRowDef="colunasExibidas"></tr>
-    <tr mat-row *matRowDef="let row; columns: colunasExibidas;"></tr>
-  </table>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4" style="text-align: center; padding: 40px; color: #64748b">
+          <mat-icon
+            style="font-size: 48px; width: 48px; height: 48px; margin-bottom: 10px; opacity: 0.5"
+            >pets</mat-icon
+          >
+          <p>Você ainda não tem pets cadastrados.</p>
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>

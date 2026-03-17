@@ -1,57 +1,51 @@
 <div class="form-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>{{ petIdEdicao ? 'Editar Pet 🐾' : 'Cadastrar Novo Pet 🐾' }}</mat-card-title>
-    </mat-card-header>
+  
+  <div class="cabecalho-pagina">
+    <button mat-icon-button routerLink="/tutor/meus-pets" title="Voltar">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2>{{ editMode ? 'Editar Pet 🐾' : 'Cadastrar Novo Pet 🐾' }}</h2>
+  </div>
 
+  <mat-card class="form-card mat-elevation-z3">
     <mat-card-content>
-      <form [formGroup]="petForm" (ngSubmit)="onSubmit()" class="meu-formulario">
+      <form [formGroup]="petForm" (ngSubmit)="salvar()" class="pet-form-layout">
 
         <mat-form-field appearance="outline">
           <mat-label>Nome do Pet</mat-label>
           <input matInput formControlName="nome" placeholder="Ex: Rex">
-          <mat-error *ngIf="petForm.get('nome')?.hasError('required')">
-            O nome é obrigatório.
-          </mat-error>
+          <mat-error *ngIf="petForm.get('nome')?.hasError('required')">O nome é obrigatório.</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Espécie</mat-label>
-          <mat-select formControlName="especie">
-            <mat-option value="Cachorro">Cachorro</mat-option>
-            <mat-option value="Gato">Gato</mat-option>
-            <mat-option value="Ave">Ave</mat-option>
-            <mat-option value="Outro">Outro</mat-option>
-          </mat-select>
-          <mat-error *ngIf="petForm.get('especie')?.hasError('required')">
-            Selecione uma espécie.
-          </mat-error>
-        </mat-form-field>
+        <div class="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Espécie</mat-label>
+            <mat-select formControlName="especie">
+              <mat-option value="Cachorro">Cachorro</mat-option>
+              <mat-option value="Gato">Gato</mat-option>
+              <mat-option value="Ave">Ave</mat-option>
+              <mat-option value="Outro">Outro</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Peso (kg)</mat-label>
+            <input matInput type="number" formControlName="peso" placeholder="Ex: 15.5">
+            <span matTextSuffix>kg</span>
+            <mat-error *ngIf="petForm.get('peso')?.hasError('required')">O peso é obrigatório.</mat-error>
+          </mat-form-field>
+        </div>
 
         <mat-form-field appearance="outline">
           <mat-label>Raça</mat-label>
           <input matInput formControlName="raca" placeholder="Ex: Labrador">
-          <mat-error *ngIf="petForm.get('raca')?.hasError('required')">
-            A raça é obrigatória.
-          </mat-error>
+          <mat-error *ngIf="petForm.get('raca')?.hasError('required')">A raça é obrigatória.</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Peso (kg)</mat-label>
-          <input matInput type="number" formControlName="peso" placeholder="Ex: 15.5">
-          <mat-error *ngIf="petForm.get('peso')?.hasError('required')">
-            O peso é obrigatório.
-          </mat-error>
-          <mat-error *ngIf="petForm.get('peso')?.hasError('min')">
-            O peso deve ser maior que zero.
-          </mat-error>
-        </mat-form-field>
-
-        <div class="botoes-container">
-          <button mat-button type="button" routerLink="/tutor/meus-pets">Cancelar</button>
-          
-          <button mat-raised-button color="primary" type="submit" [disabled]="petForm.invalid">
-            {{ petIdEdicao ? 'Atualizar Pet' : 'Salvar Pet' }}
+        <div class="botoes-acoes">
+          <button mat-flat-button color="primary" type="submit" [disabled]="petForm.invalid || carregando">
+              <mat-icon *ngIf="!carregando">{{ editMode ? 'save' : 'add' }}</mat-icon>
+                    {{ carregando ? 'Processando...' : (editMode ? 'Atualizar Pet' : 'Salvar Pet') }}
           </button>
         </div>
 

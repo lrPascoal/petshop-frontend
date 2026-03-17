@@ -1,25 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
+// Material
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
+// Serviços e Models
 import { PetService } from '../../../services/pet';
-import { ServicosPetService, Servico } from '../../../services/servicos-pet';
+import { ServicosPetService } from '../../../services/servicos-pet';
 import { AgendamentoService } from '../../../services/agendamento';
-import { Pet, Agendamento } from '../../../models/model';
+import { Pet, Servico } from '../../../models/model';
 
 @Component({
   selector: 'app-agendar',
   standalone: true,
   imports: [
-    CommonModule, ReactiveFormsModule, MatFormFieldModule, 
-    MatInputModule, MatSelectModule, MatButtonModule, MatCardModule
+    CommonModule, ReactiveFormsModule, RouterModule, MatSnackBarModule,
+    MatCardModule, MatFormFieldModule, MatInputModule, 
+    MatSelectModule, MatButtonModule, MatIconModule
   ],
   templateUrl: './agendar.html',
   styleUrl: './agendar.css'
@@ -28,44 +33,73 @@ export class Agendar implements OnInit {
   agendamentoForm: FormGroup;
   meusPets: Pet[] = [];
   servicosDisponiveis: Servico[] = [];
+  enviando = false;
+  hoje = new Date().toISOString().split('T')[0];
 
   constructor(
     private fb: FormBuilder,
     private petService: PetService,
-    private servicoService: ServicosPetService,
+    private servicosService: ServicosPetService,
     private agendamentoService: AgendamentoService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
     this.agendamentoForm = this.fb.group({
-      pet: [null, Validators.required],
-      servico: [null, Validators.required],
-      dataHora: ['', Validators.required]
+      petId: ['', Validators.required],
+      servicoId: ['', Validators.required],
+      data: ['', Validators.required],
+      hora: ['', Validators.required],
+      status: ['Aguardando']
     });
   }
 
   ngOnInit(): void {
-    // Busca Pets e Serviços para preencher os campos de seleção
-    this.petService.getPets().subscribe(dados => this.meusPets = dados);
-    this.servicoService.getServicos().subscribe(dados => this.servicosDisponiveis = dados);
+    this.carregarDadosIniciais();
   }
 
-  onSubmit(): void {
+  carregarDadosIniciais() {
+    this.petService.getPets().subscribe({
+      next: (res) => this.meusPets = res,
+      error: () => this.notificar('Erro ao carregar seus pets.', true)
+    });
+
+    this.servicosService.getServicos().subscribe({
+      next: (res) => this.servicosDisponiveis = res,
+      error: () => this.notificar('Erro ao carregar serviços.', true)
+    });
+  }
+
+  confirmarAgendamento() {
     if (this.agendamentoForm.valid) {
-      const form = this.agendamentoForm.value;
+      this.enviando = true;
       
-      const novoAgendamento: Agendamento = {
-        petId: form.pet.id,
-        petNome: form.pet.nome,
-        servicoId: form.servico.id,
-        servicoNome: form.servico.nome,
-        dataHora: form.dataHora,
-        status: 'Aguardando'
+      // --- O AJUSTE ESTÁ AQUI ---
+      // 1. Buscamos o pet e o serviço completos nas nossas listas usando os IDs do formulário
+      const petEscolhido = this.meusPets.find(p => p.id === this.agendamentoForm.value.petId);
+      const servicoEscolhido = this.servicosDisponiveis.find(s => s.id === this.agendamentoForm.value.servicoId);
+
+      // 2. Criamos o objeto que será salvo na API incluindo os NOMES
+      const dadosParaSalvar = {
+        ...this.agendamentoForm.value,
+        petNome: petEscolhido?.nome,        // <-- Agora o Admin tem o nome do pet
+        servicoNome: servicoEscolhido?.nome, // <-- Agora o Admin tem o nome do serviço
+        dataHora: `${this.agendamentoForm.value.data}T${this.agendamentoForm.value.hora}:00`
       };
 
-      this.agendamentoService.agendar(novoAgendamento).subscribe(() => {
-        alert('Agendamento realizado com sucesso! 🐾');
-        this.router.navigate(['/tutor/meus-pets']);
+      this.agendamentoService.criarAgendamento(dadosParaSalvar).subscribe({
+        next: () => {
+          this.notificar('Agendamento realizado com sucesso!');
+          this.router.navigate(['/tutor/meus-pets']);
+        },
+        error: () => {
+          this.enviando = false;
+          this.notificar('Erro ao salvar agendamento.', true);
+        }
       });
     }
+  }
+
+  private notificar(msg: string, isErro = false) {
+    this.snackBar.open(msg, 'Fechar', { duration: 3000, panelClass: isErro ? ['erro-snackbar'] : ['sucesso-snackbar'] });
   }
 }

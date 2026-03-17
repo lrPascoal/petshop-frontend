@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
+// Componentes Material
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 import { PetService } from '../../../services/pet';
 import { Pet } from '../../../models/model';
@@ -16,84 +19,98 @@ import { Pet } from '../../../models/model';
   selector: 'app-pet-form',
   standalone: true,
   imports: [
-    CommonModule, ReactiveFormsModule, RouterModule,
-    MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatCardModule
+    CommonModule, 
+    ReactiveFormsModule, 
+    RouterModule, 
+    MatSnackBarModule,
+    MatCardModule, 
+    MatFormFieldModule, 
+    MatInputModule, 
+    MatSelectModule, 
+    MatButtonModule, 
+    MatIconModule
   ],
-  templateUrl: './pet-form.html',
-  styleUrl: './pet-form.css'
+  templateUrl: './pet-form.html', // Verifique se o arquivo pet-form.html está nesta mesma pasta
+  styleUrl: './pet-form.css'      // Verifique se o arquivo pet-form.css está nesta mesma pasta
 })
 export class PetForm implements OnInit {
   petForm: FormGroup;
-  petIdEdicao: number | null = null; 
+  editMode = false;
+  petId: number | null = null;
+  carregando = false;
 
   constructor(
     private fb: FormBuilder,
     private petService: PetService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar
   ) {
+    // Inicialização do formulário com validações
     this.petForm = this.fb.group({
-      nome: ['', Validators.required],
-      especie: ['', Validators.required],
+      nome: ['', [Validators.required, Validators.minLength(2)]],
+      especie: ['Cachorro', Validators.required],
       raca: ['', Validators.required],
-      peso: ['', [Validators.required, Validators.min(0.1)]]
+      peso: [null, [Validators.required, Validators.min(0.1)]]
     });
   }
 
   ngOnInit(): void {
-    const idParam = this.route.snapshot.paramMap.get('id');
+    // Captura o ID da URL para definir se é EDIÇÃO ou CADASTRO
+    const id = this.route.snapshot.paramMap.get('id');
     
-    if (idParam) {
-      this.petIdEdicao = Number(idParam);
+    if (id) {
+      this.editMode = true;
+      this.petId = +id; // Converte string para número
+      this.carregarDadosParaEdicao(this.petId);
+    }
+  }
+
+  carregarDadosParaEdicao(id: number) {
+    this.petService.getPetById(id).subscribe({
+      next: (pet: Pet) => {
+        this.petForm.patchValue(pet);
+      },
+      error: (err: any) => {
+        console.error('Erro ao buscar pet:', err);
+        this.notificar('Erro ao carregar dados do pet.', true);
+      }
+    });
+  }
+
+  salvar() {
+    if (this.petForm.valid) {
+      this.carregando = true;
       
-      // MUDANÇA AQUI: Agora nos inscrevemos para receber o pet do servidor
-      this.petService.getPetById(this.petIdEdicao).subscribe({
-        next: (petParaEditar) => {
-          this.petForm.patchValue({
-            nome: petParaEditar.nome,
-            especie: petParaEditar.especie,
-            raca: petParaEditar.raca,
-            peso: petParaEditar.peso
-          });
+      // Montagem do objeto Pet conforme esperado pelo serviço
+      const dadosPet: Pet = {
+        ...this.petForm.value,
+        id: this.editMode ? this.petId : undefined
+      };
+
+      // Define se chama atualizar ou adicionar
+      const operacao = (this.editMode && this.petId)
+        ? this.petService.atualizarPet(dadosPet) 
+        : this.petService.adicionarPet(dadosPet);
+
+      operacao.subscribe({
+        next: () => {
+          this.notificar(this.editMode ? 'Pet atualizado!' : 'Pet cadastrado com sucesso!');
+          this.router.navigate(['/tutor/meus-pets']);
         },
-        error: (err) => console.error('Erro ao buscar pet para edição', err)
+        error: (err: any) => {
+          console.error('Erro na requisição:', err);
+          this.carregando = false;
+          this.notificar('Erro ao processar no servidor. Tente novamente.', true);
+        }
       });
     }
   }
 
-  onSubmit() {
-    if (this.petForm.valid) {
-      const dadosDoFormulario = this.petForm.value;
-
-      if (this.petIdEdicao) {
-        // MODO EDIÇÃO (PUT)
-        const petAtualizado: Pet = {
-          ...dadosDoFormulario, // Pega todos os campos do form
-          id: this.petIdEdicao,
-          tutorId: 1
-        };
-        
-        // MUDANÇA AQUI: Aguardamos a resposta do servidor antes de navegar
-        this.petService.atualizarPet(petAtualizado).subscribe(() => {
-          this.router.navigate(['/tutor/meus-pets']);
-        });
-      
-      } else {
-        // MODO CADASTRO (POST)
-        const novoPet: Pet = {
-          ...dadosDoFormulario,
-          id: 0, // O JSON Server/Banco de dados vai gerar o ID real
-          tutorId: 1
-        };
-        
-        // MUDANÇA AQUI: Aguardamos a resposta do servidor antes de navegar
-        this.petService.adicionarPet(novoPet).subscribe(() => {
-          this.router.navigate(['/tutor/meus-pets']);
-        });
-      }
-      
-    } else {
-      this.petForm.markAllAsTouched();
-    }
+  private notificar(msg: string, isErro = false) {
+    this.snackBar.open(msg, 'Fechar', {
+      duration: 3000,
+      panelClass: isErro ? ['erro-snackbar'] : ['sucesso-snackbar']
+    });
   }
 }
