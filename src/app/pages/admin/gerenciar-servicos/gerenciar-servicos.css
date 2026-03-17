@@ -1,27 +1,124 @@
-/* 1. Alvo direto no container do R$ para dar o distanciamento */
-.mat-mdc-form-field-prefix {
-  padding-right: 12px !important; /* Cria o espaço entre o R$ e o número */
-  padding-left: 4px;              /* Afasta o R$ da borda esquerda */
+/* =========================================
+   CONTAINER E CABEÇALHO
+   ========================================= */
+.servicos-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-/* 2. Estilização do texto do R$ */
-span[matPrefix] {
-  font-weight: 500;
-  color: #555;
+.cabecalho-pagina {
+  margin-bottom: 25px;
+}
+
+.cabecalho-pagina h2 {
   display: flex;
   align-items: center;
-  padding: 5px;
+  gap: 10px;
+  margin: 0;
+  font-size: 1.6rem;
+  color: #333;
+  font-weight: 600;
 }
 
-/* 3. Ajuste para o texto digitado não ficar "grudado" */
-.mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control {
-  padding-left: 4px !important;
+.cabecalho-pagina p {
+  margin: 5px 0 0 34px;
+  color: #666;
+  font-size: 0.95rem;
 }
 
-/* 4. Garantir que o formulário não quebre em telas menores */
-.servico-form {
+/* =========================================
+   FORMULÁRIO (Mobile First)
+   ========================================= */
+.form-card {
+  margin-bottom: 30px;
+  border-radius: 12px;
+  background-color: #fcfcfc;
+  /* Sombra para o card do formulário também */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important; 
+  border: 1px solid #e2e8f0;
+}
+
+.form-layout {
   display: flex;
-  gap: 20px;
-  align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 15px;
+  padding-top: 15px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.btn-adicionar {
+  height: 52px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* =========================================
+   TABELA E EFEITOS
+   ========================================= */
+.tabela-container {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  
+  /* MÁGICA DA BORDA E DA SOMBRA AQUI 👇 */
+  border: 1px solid #e2e8f0; /* Borda cinza bem clara e elegante */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06); /* Sombra suave para destacar do fundo */
+}
+
+.tabela-servicos {
+  width: 100%;
+}
+
+th.mat-header-cell {
+  background-color: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+td.mat-cell {
+  color: #333;
+  font-size: 0.95rem;
+}
+
+/* -----------------------------------------
+   Efeito Hover Blindado (Angular Material)
+   ----------------------------------------- */
+tr.mat-row, 
+tr.mat-mdc-row {
+  transition: background-color 0.2s ease;
+}
+
+tr.mat-row:hover, 
+tr.mat-mdc-row:hover {
+  background-color: #f1f5f9 !important;
+}
+
+tr.mat-row:hover td.mat-cell, 
+tr.mat-mdc-row:hover td.mat-mdc-cell {
+  background-color: transparent !important;
+}
+
+/* =========================================
+   💻 RESPONSIVIDADE (Telas de PC / Tablet)
+   ========================================= */
+@media (min-width: 768px) {
+  .form-layout {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .campo-nome { flex: 2; }
+  .campo-preco { flex: 1; }
+  
+  .btn-adicionar {
+    flex: 0 0 auto;
+    margin-top: 4px;
+  }
 }
