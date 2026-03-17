@@ -1,54 +1,166 @@
-.dashboard-container { padding: 20px; }
+/* Container Principal */
+.dashboard-container {
+  padding: 24px;
+  background-color: #f1f5f9;
+  min-height: 100vh;
+  position: relative; /* Para o loading se basear aqui */
+}
 
-/* Estilo do Carregando */
+/* LOADING - Centralizado e por cima do conteúdo sem quebrar o layout */
 .loading-shade {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(241, 245, 249, 0.8);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-content {
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
-  color: #3f51b5;
-  font-weight: 500;
+  gap: 12px;
 }
 
+/* GRID DE CARDS (Topo) */
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
   margin-bottom: 30px;
 }
 
-.clicavel {
-  cursor: pointer;
-  transition: all 0.2s ease;
+.info-card {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.clicavel:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-  background-color: #fafafa;
+.card-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #64748b;
+  font-weight: 600;
 }
 
-.card-value { font-size: 2.5rem; font-weight: bold; text-align: right; margin-top: 10px; }
-
-/* Animação de Entrada suave */
-.animate-in {
-  animation: fadeInUp 0.6s ease-out;
+.card-value {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 12px 0;
+  color: #1e293b;
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* BARRA DE AGENDA */
+.barra-agenda {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 25px;
 }
 
-.status-badge {
-  padding: 4px 10px;
+.filtro-data {
+  width: 220px;
+}
+
+/* GRID DE TURNOS */
+.turnos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.turno-col {
+  background: #e2e8f0;
+  border-radius: 20px;
+  padding: 16px;
+  min-height: 200px;
+}
+
+.turno-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #475569;
+}
+
+/* ITEM DE ATENDIMENTO */
+.item-atd {
+  background: white;
+  padding: 14px 18px;
   border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: bold;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
 }
-.aguardando { background: #fff3cd; color: #856404; }
-.andamento { background: #cce5ff; color: #004085; }
+
+.item-atd:hover {
+  transform: translateY(-2px);
+}
+
+.item-atd .txt {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-atd .txt strong {
+  font-size: 1rem;
+  color: #1e293b;
+}
+
+.item-atd .txt small {
+  color: #64748b;
+}
+
+/* ACOES E BADGES */
+.acoes-atd {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.badge.aguardando { background: #fef3c7; color: #92400e; }
+.badge.concluido { background: #dcfce7; color: #166534; }
+.badge.cancelado { background: #fee2e2; color: #991b1b; }
+.badge.em-andamento { background: #e0f2fe; color: #0369a1; }
+
+/* RESPONSIVIDADE */
+@media (max-width: 600px) {
+  .dashboard-container { padding: 16px; }
+  .barra-agenda { flex-direction: column; align-items: flex-start; }
+  .filtro-data { width: 100%; }
+  
+  .item-atd {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .acoes-atd {
+    width: 100%;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid #f1f5f9;
+  }
+}
