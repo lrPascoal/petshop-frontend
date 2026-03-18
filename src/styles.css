@@ -1,7 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+/* --- TEMA CLARO --- */
+:root {
+  --bg-app: #e2e8f0;       
+  --bg-card: #ffffff;
+  --text-main: #1e293b;
+  --text-button-theme: #ffffff;
+  --primary: #3f51b5;
+  --border: #cbd5e1;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* --- TEMA ESCURO --- */
+[data-theme='dark'] {
+  --bg-app: #030712;       
+  --bg-card: #111827;      
+  --text-main: #f8fafc;
+  --text-button-theme: #000000;
+  --primary: #818cf8;      
+  --border: #374151;       
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
 
-.sucesso-snackbar { background: #2e7d32 !important; color: white !important; }
-.erro-snackbar { background: #d32f2f !important; color: white !important; }
+body {
+  margin: 0;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: Roboto, sans-serif;
+}
+
+/* Botão Flutuante (Apenas no Login) */
+.fab-theme {
+  position: fixed;
+  bottom: 25px; /* Movido para baixo */
+  right: 25px;
+  z-index: 1100;
+  background-color: var(--primary) !important;
+  color: var(--text-button-theme) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+}
+
+.espacador {
+  flex: 1 1 auto;
+}
+
+.rodape {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
