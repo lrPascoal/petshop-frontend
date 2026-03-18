@@ -9,7 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 
+// Importe o ThemeService
 import { AuthService } from './services/auth'; 
+import { ThemeService } from './services/theme.service'; // Ajuste o caminho se necessário
 
 @Component({
   selector: 'app-root',
@@ -19,7 +21,7 @@ import { AuthService } from './services/auth';
     RouterOutlet, 
     RouterModule, 
     MatToolbarModule, 
-    MatButtonModule, 
+    MatButtonModule, // Necessário para o mat-fab e mat-icon-button
     MatIconModule,
     MatMenuModule,
     MatDividerModule
@@ -30,23 +32,19 @@ import { AuthService } from './services/auth';
 export class App { 
   title = 'PetShop System';
 
-  // Injetamos o AuthService como public para o template HTML acessar as propriedades de login
+  // Injetamos o AuthService e o ThemeService como public
   constructor(
     public authService: AuthService, 
+    public themeService: ThemeService, // Agora o HTML consegue acessar o darkMode() e toggleTheme()
     private router: Router
   ) {}
 
   /**
    * Método centralizado de saída.
-   * Ele utiliza a lógica do serviço e redireciona o usuário.
    */
   logout(): void {
     console.log('Encerrando sessão do usuário...');
-    
-    // 1. Chama a limpeza de dados no serviço (que deve conter o localStorage.removeItem)
     this.authService.fazerLogout();
-    
-    // 2. Redireciona para a tela de login
     this.router.navigate(['/login']);
   }
 }

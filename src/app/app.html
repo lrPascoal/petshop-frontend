@@ -1,3 +1,7 @@
+<button mat-fab class="fab-theme" *ngIf="!authService.isLogado()" (click)="themeService.toggleTheme()" title="Mudar Tema">
+  <mat-icon>{{ themeService.darkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+</button>
+
 <mat-toolbar color="primary" *ngIf="authService.isLogado()">
   <span class="logo" routerLink="/">🐾 PetShop</span>
 
@@ -13,6 +17,10 @@
       <button mat-button routerLink="/tutor/meus-pets">Meus Pets</button>
       <button mat-button routerLink="/tutor/agendar">Agendar Banho</button>
     </ng-container>
+
+    <button mat-icon-button (click)="themeService.toggleTheme()" title="Alternar Tema">
+      <mat-icon>{{ themeService.darkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
 
     <button mat-icon-button (click)="logout()" title="Sair">
       <mat-icon>logout</mat-icon>
@@ -48,6 +56,11 @@
       </ng-container>
 
       <mat-divider></mat-divider>
+
+      <button mat-menu-item (click)="themeService.toggleTheme()">
+        <mat-icon>{{ themeService.darkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        <span>Alternar Tema</span>
+      </button>
 
       <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
